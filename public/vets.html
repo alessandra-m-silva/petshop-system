@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro veterinário</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro veterinário ⚕️</h1>
+        
+        <form id="formvets">
+            <label for="vet">Nome</label>
+            <input type="text" id="vet" placeholder="Insira o nome" required>
+
+            <label for="crmv">CRMV</label>
+            <input type="text" id="crmv" placeholder="Insira o CRMV" required>
+
+            <label for="especialidade">Especialidade</label>
+            <input type="text" id="especialidade" placeholder="Insira a especialidade" required>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        const formsvet = document.getElementById('formvets')
+
+        formsvet.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const dadosVet = {
+                nome: document.getElementById('vet').value.trim(),
+                crmv: document.getElementById('crmv').value.trim(),
+                especialidade: document.getElementById('especialidade').value.trim()
+            }
+            
+            if (!dadosVet.nome || !dadosVet.crmv || !dadosVet.especialidade) {
+                alert('Não pode haver campos vazios!');
+                return; 
+            }
+
+            try {
+                const resposta = await fetch('http://localhost:3000/petshop/cadastrar-vet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dadosVet)
+                });
+
+                const resultado = await resposta.json();
+                alert(resultado.message);
+            } catch (erro) {
+                console.error('Erro ao enviar cadastro:', erro);
+                alert('Erro ao conectar com o servidor.');
+            }
+        });
+    </script>
+</body>
+</html>

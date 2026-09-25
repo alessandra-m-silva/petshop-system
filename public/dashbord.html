@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashbord</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 id="h1">Bem-vindo!</h1>
+        <button id="cadastroPet">Cadastrar novo pet</button>
+        <button id="cadastroVet">Cadastrar novo veterinário</button>
+        <button id="sair">Sair</button>
+    </div>
+
+    <script>
+        const usuarioSalvo = localStorage.getItem('usuarioLogado');
+
+        if (!usuarioSalvo || usuarioSalvo === 'undefined') {
+            window.location.href = 'index.html';
+        } else {
+            const usuarioDados = JSON.parse(usuarioSalvo);
+            document.getElementById('h1').innerText =
+                `Bem-vindo, ${usuarioDados.user}!`;
+        }
+
+        document.getElementById('sair').addEventListener('click', () => {
+            localStorage.removeItem('usuarioLogado');
+            window.location.href = 'index.html';
+        });
+        document.getElementById('cadastroPet').addEventListener('click', () => {
+            window.location.href = 'pets.html'
+        });
+        document.getElementById('cadastroVet').addEventListener('click', () => {
+            window.location.href = 'vets.html'
+        })
+    </script>
+</body>
+</html>

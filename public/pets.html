@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro pets</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cadastro pets 🐾</h1>
+        
+        <form id="formpets">
+            <label for="tutor">Nome do Tutor</label>
+            <input type="text" id="tutor" placeholder="Insira o nome do tutor" required>
+
+            <label for="pet">Nome do Pet</label>
+            <input type="text" id="pet" placeholder="Insira o nome do pet" required>
+
+            <label for="raca">Raça</label>
+            <input type="text" id="raca" placeholder="Insira a raça" required>
+
+            <label for="genero">Gênero</label>
+            <select id="genero">
+                <option disabled selected>Selecione o gênero</option>
+                <option>Macho</option>
+                <option>Fêmea</option>
+            </select>
+            
+            <label for="peso">Peso</label>
+            <input type="number" step="0.01" id="peso" placeholder="Insira o peso" required>
+
+            <label for="idade">Idade</label>
+            <input type="number" id="idade" placeholder="Insira a idade" required>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        const forms = document.getElementById('formpets');
+
+        forms.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formPet = {
+                tutor: document.getElementById('tutor').value.trim(),
+                pet: document.getElementById('pet').value.trim(), 
+                raca: document.getElementById('raca').value.trim(),
+                genero: document.getElementById('genero').value,
+                peso: parseFloat(document.getElementById('peso').value),
+                idade: parseInt(document.getElementById('idade').value)
+            }
+            
+            
+            try {
+                const resposta = await fetch('http://localhost:3000/petshop/cadastrar-pet', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formPet)
+                });
+                const resultado = await resposta.json();
+
+                if (resposta.ok) {
+                    alert(resultado.message);
+                    forms.reset();
+                }else {
+                    alert(resultado.message);
+                }
+            } catch (error) {
+                console.error('Erro ao enviar cadastro:', error);
+                alert('Erro ao conectar com o servidor.');
+            }
+        });
+    </script>
+</body>
+</html>
